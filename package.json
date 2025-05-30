@@ -22,8 +22,8 @@
     "uuid": "^3.4.0"
   },
   "scripts": {
-    "start": "PUBLIC_URL='/' react-scripts start",
-    "build": "PUBLIC_URL='/logos-library' react-scripts build",
+    "start": "cross-env PUBLIC_URL=/ react-scripts start",
+    "build": "cross-env PUBLIC_URL='/logos-library' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "gh-pages": "^6.3.0"
   }
 }
