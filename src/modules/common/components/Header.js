@@ -52,7 +52,7 @@ const Header = () => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const clickSound = useRef(new Audio('/sounds/click.mp3'));
+  const clickSound = useRef(new Audio(`${process.env.PUBLIC_URL}/sounds/click.mp3`));
 
   const playClickSound = () => {
     // Ensure it plays from the start on rapid clicks
