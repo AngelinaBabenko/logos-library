@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Header from 'modules/common/components/Header';
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 function App() {
   const classes = useStyles();
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter basename={process.env.PUBLIC_URL}>
       <div className={classes.container}>
         <Header />
         <Switch>
@@ -36,7 +36,7 @@ function App() {
           <Redirect from="/" to="/home" />
         </Switch>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
