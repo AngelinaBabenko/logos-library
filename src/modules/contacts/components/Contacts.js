@@ -1,42 +1,53 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Container, Grid, Typography, Box } from '@material-ui/core';
 
-import PageTitle from 'modules/common/components/PageTitle';
-
-const useStyles = makeStyles({
-  contianer: {},
+const useStyles = makeStyles((theme) => ({
   content: {
-    display: 'inline-grid',
-    gridTemplateColumns: '180px 300px',
-    marginTop: '40px',
-    marginLeft: '100px',
-
-    '& span': {
-      fontWeight: '500',
-      '&:nth-child(odd)': {
-        fontWeight: '700',
-      }
-    }
-  }
-});
+    marginTop: theme.spacing(5),
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(12),
+    },
+  },
+  label: {
+    fontWeight: 700,
+  },
+  value: {
+    fontWeight: 500,
+    wordBreak: 'break-word',
+  },
+}));
 
 function Contacts() {
   const classes = useStyles();
 
+  const contactData = [
+    { label: 'Email підтримки:', value: 'support@library.com' },
+    { label: 'Телефон:', value: '+38 (099) 123-45-67' },
+    { label: 'Адреса:', value: 'вул. Книжкова, 12, Київ, Україна' },
+    { label: 'Години роботи:', value: 'Пн–Пт: 09:00–18:00' },
+  ];
+
   return (
-    <div className={classes.container}>
-      <PageTitle>Контакти</PageTitle>
-      <div className={classes.content}>
-        <span>Email підтримки:</span>
-        <span>support@library.com</span>
-        <span>Телефон:</span>
-        <span>+38 (099) 123-45-67</span>
-        <span>Адреса:</span>
-        <span>вул. Книжкова, 12, Київ, Україна</span>
-        <span>Години роботи:</span>
-        <span>Пн–Пт: 09:00–18:00</span>
-      </div>
-    </div>
+    <Container>
+      <Box mb={4} mt={5}>
+        <Typography variant="h4" component="h1">
+          Контакти
+        </Typography>
+      </Box>
+      <Grid container spacing={2} className={classes.content}>
+        {contactData.map(({ label, value }, index) => (
+          <React.Fragment key={index}>
+            <Grid item xs={12} sm={4}>
+              <Typography className={classes.label}>{label}</Typography>
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <Typography className={classes.value}>{value}</Typography>
+            </Grid>
+          </React.Fragment>
+        ))}
+      </Grid>
+    </Container>
   );
 }
 

@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Hidden
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
-
 import Logo from 'modules/common/components/Logo';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   toolbar: {
     justifyContent: 'space-between'
   },
@@ -24,26 +32,92 @@ const useStyles = makeStyles({
       }
     }
   },
-});
+  button: {},
 
-const Header = props => {
+  drawerList: {
+    width: 250,
+    paddingTop: theme.spacing(2),
+  },
+}));
+
+const navItems = [
+  { path: '/home', label: 'Головна' },
+  { path: '/catalog', label: 'Каталог' },
+  { path: '/contacts', label: 'Контакти' },
+  { path: '/login', label: 'Вхід' },
+  // { path: '/cabinet', label: 'Кабінет' },
+];
+
+const Header = () => {
   const classes = useStyles();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = (open) => () => {
+    setDrawerOpen(open);
+  };
+
+  const drawer = (
+    <div
+      className={classes.drawerList}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        {navItems.map((item) => (
+          <NavLink
+            key={item.path}
+            exact
+            to={item.path}
+            activeClassName={classes.active}
+            style={{ textDecoration: 'none' }}
+          >
+            <ListItem button>
+              <ListItemText primary={item.label} />
+            </ListItem>
+          </NavLink>
+        ))}
+      </List>
+    </div>
+  );
+
   return (
-    <AppBar position="fixed" className={classes.appBar} color="default">
+    <AppBar position="fixed" color="default">
       <Toolbar className={classes.toolbar}>
         <Logo />
 
-        <div className={classes.menu}>
-          <NavLink exact activeClassName={classes.active} to="/home"><Button className={classes.button} variant="contained" color="primary">Головна</Button></NavLink>
-          <NavLink exact activeClassName={classes.active} to="/catalog"><Button className={classes.button} variant="contained" color="primary">Каталог</Button></NavLink>
-          <NavLink exact activeClassName={classes.active} to="/contacts"><Button className={classes.button} variant="contained" color="primary">Контакти</Button></NavLink>
-          <NavLink exact activeClassName={classes.active} to="/login"><Button className={classes.button} variant="contained" color="primary">Вхід</Button></NavLink>
-          {/* <NavLink exact activeClassName={classes.active} to="/cabinet"><Button className={classes.button} variant="contained" color="primary">Кабінет</Button></NavLink> */}
-        </div>
+        {/* Desktop Menu */}
+        <Hidden smDown>
+          <div className={classes.menu}>
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                exact
+                to={item.path}
+                activeClassName={classes.active}
+              >
+                <Button className={classes.button} variant="contained" color="primary">
+                  {item.label}
+                </Button>
+              </NavLink>
+            ))}
+          </div>
+        </Hidden>
 
+        {/* Mobile Menu Icon */}
+        <Hidden mdUp>
+          <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
+            <MenuIcon />
+          </IconButton>
+        </Hidden>
       </Toolbar>
-    </AppBar>
-  )
-}
 
-export default Header
+      {/* Mobile Drawer */}
+      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+        {drawer}
+      </Drawer>
+    </AppBar>
+  );
+};
+
+export default Header;
