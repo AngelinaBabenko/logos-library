@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   AppBar,
@@ -52,8 +52,21 @@ const Header = () => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const clickSound = useRef(new Audio('/sounds/click.mp3'));
+
+  const playClickSound = () => {
+    // Ensure it plays from the start on rapid clicks
+    clickSound.current.currentTime = 0;
+    clickSound.current.play();
+  };
+
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
+    playClickSound();
+  };
+
+  const handleMenuClick = () => {
+    playClickSound();
   };
 
   const drawer = (
@@ -71,6 +84,7 @@ const Header = () => {
             to={item.path}
             activeClassName={classes.active}
             style={{ textDecoration: 'none' }}
+            onClick={handleMenuClick}
           >
             <ListItem button>
               <ListItemText primary={item.label} />
@@ -95,6 +109,7 @@ const Header = () => {
                 exact
                 to={item.path}
                 activeClassName={classes.active}
+                onClick={handleMenuClick}
               >
                 <Button className={classes.button} variant="contained" color="primary">
                   {item.label}
